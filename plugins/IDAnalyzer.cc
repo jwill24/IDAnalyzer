@@ -94,19 +94,27 @@ IDAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    using namespace edm;
    using namespace std;
    
-   //std::vector<bool> passing;
-   bool passing = true;
-
+   bool passing = false;
 
    for(const auto& pho : iEvent.get(photonsToken_) ) {
           
-     //cout << "Photon pt: " << pho.pt() << endl;
-     if (pho.pt() < 500) {
-       passing = false;
-       break;
-     }
+     if (pho.eta() > 1.14790) break;
+     if (pho.hadTowOverEm() > 0.02600) break;
+     if (pho.sigmaIetaIeta() > 0.0104) break;
+     if (pho.chargedHadronIso() > 1.146) break; 
+     if (pho.neutralHadronIso() > 2.792+0.0112*pho.pt()+0.000028*pho.pt()*pho.pt()) break;
+     if (pho.photonIso() > 2.176+0.0043*pho.pt()) break;
+     if (pho.pt() < 175.0) break;
+     if (pho.eta() > 1.4442) break;
+     if (pho.hasPixelSeed()) break;
+     if (pho.sigmaIetaIeta() < 0.0010) break;
+     if (pho.sigmaIphiIphi() < 0.0010) break;
+     if (pho.mipTotEnergy() < 4.90000) break;
+     if (pho.seed().time() < 3.00)     break;
+     passing = true;
 
-   }
+
+}
 
 
 
